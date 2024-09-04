@@ -41,7 +41,6 @@ client.on('messageCreate', async (message) => {
   }
 });
 
-
 // Initialize tasks
 client.once('ready', async () => {
   console.log(`Logged in as ${client.user.tag}!`);
