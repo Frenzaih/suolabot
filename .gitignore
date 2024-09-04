@@ -1,0 +1,6 @@
+/data/
+/node_modules/
+*.log
+config.json
+.env
+notes.txt
