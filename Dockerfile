@@ -16,14 +16,11 @@ COPY . ./
 # Ensure the logs directory exists (ownership adjustment removed)
 RUN mkdir -p /app/logs
 
-# Switch to your non-root user
-USER nobody
-
 # Define environment variables
 ENV NODE_ENV=production
 ENV BOT_TOKEN=
 ENV DUCK_CHANNEL=
-ENV DUCK_IMAGE_PATH=
+ENV DATA_PATH=
 
 # Define the logs directory as a volume
 VOLUME /app/logs
