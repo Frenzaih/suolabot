@@ -20,7 +20,7 @@ RUN mkdir -p /app/logs
 ENV NODE_ENV=production
 ENV BOT_TOKEN=
 ENV DUCK_CHANNEL=
-ENV DATA_PATH=
+ENV DUCK_IMAGE_PATH=
 
 # Define the logs directory as a volume
 VOLUME /app/logs
