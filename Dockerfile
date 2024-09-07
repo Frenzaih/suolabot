@@ -24,7 +24,6 @@ ENV BOT_TOKEN=
 ENV DUCK_CHANNEL=
 ENV DUCK_IMAGE_PATH=
 
-
 # Define the logs directory as a volume
 VOLUME /app/logs
 
