@@ -14,11 +14,34 @@ const client = new Client({
   ]
 });
 
-// Ensure /data directory exists
-const dataDir = path.join(__dirname, 'data');
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
-  console.log(`Created /data directory at: ${dataDir}`);
+// Define paths
+const baseDir = path.resolve('./data');
+const imagesDir = path.join(baseDir, 'duck-images');
+const playerDataPath = path.join(baseDir, 'playerdata.json');
+const usedDuckImagesPath = path.join(baseDir, 'usedDuckImages.json');
+
+// Ensure base directory exists
+if (!fs.existsSync(baseDir)) {
+  fs.mkdirSync(baseDir, { recursive: true });
+  console.log(`Created directory at: ${baseDir}`);
+}
+
+// Ensure duck-images directory exists
+if (!fs.existsSync(imagesDir)) {
+  fs.mkdirSync(imagesDir, { recursive: true });
+  console.log(`Created directory at: ${imagesDir}`);
+}
+
+// Ensure playerdata.json file exists
+if (!fs.existsSync(playerDataPath)) {
+  fs.writeFileSync(playerDataPath, JSON.stringify({ players: [] }), 'utf8');
+  console.log(`Created new playerdata.json at: ${playerDataPath}`);
+}
+
+// Ensure usedDuckImages.json file exists
+if (!fs.existsSync(usedDuckImagesPath)) {
+  fs.writeFileSync(usedDuckImagesPath, JSON.stringify([]), 'utf8');
+  console.log(`Created new usedDuckImages.json at: ${usedDuckImagesPath}`);
 }
 
 // Load commands from the "lib/commands" folder

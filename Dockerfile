@@ -16,9 +16,6 @@ COPY . ./
 # Ensure the logs directory exists (ownership adjustment removed)
 RUN mkdir -p /app/logs
 
-# Switch to your non-root user
-USER nobody
-
 # Define environment variables
 ENV NODE_ENV=production
 ENV BOT_TOKEN=
