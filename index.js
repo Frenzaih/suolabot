@@ -51,7 +51,7 @@ client.once('ready', async () => {
     if (message.author.bot) return;
 
     if (message.content === '!forcepost' && message.member.permissions.has('ADMINISTRATOR')) {
-      // Use the channel where the command was sent
+      console.log("Forcefully posting duck image")
       await postDuckImage(client, message.channel, false); // Pass false to not mark the image as used
     }
   });
