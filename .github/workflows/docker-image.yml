@@ -1,0 +1,57 @@
+name: CI/CD Pipeline
+
+on:
+    push:
+        branches:
+            - master # Trigger on pushes to the main branch; adjust if your default branch has a different name
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out the repo
+              uses: actions/checkout@v3 # Updated to v3
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v3 # Updated to v3
+              with:
+                  node-version: "21.1.0" # Match Dockerfile
+
+            - name: Install dependencies
+              run: npm install
+
+            - name: Run tests
+              run: npm test
+              # Ensure your project has a test script defined in package.json. If your testing command differs, update this line accordingly.
+
+    build-and-push:
+        needs: test # This job runs only if the 'test' job completes successfully
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out the repo
+              uses: actions/checkout@v3 # Updated to v3
+
+            - name: Log in to DockerHub
+              uses: docker/login-action@v2 # Ensure you're using the latest version
+              with:
+                  username: ${{ secrets.DOCKER_USERNAME }}
+                  password: ${{ secrets.DOCKER_PASSWORD }}
+
+            - name: Build and push Docker image
+              uses: docker/build-push-action@v3 # Updated to v3, check if this version is available
+              with:
+                  context: .
+                  file: ./Dockerfile
+                  push: true
+                  tags: ${{ secrets.DOCKER_USERNAME }}/suolabot:latest
+
+            - name: Build and push Docker image with version tag
+              if: startsWith(github.ref, 'refs/tags/')
+              uses: docker/build-push-action@v3 # Updated to v3, check if this version is available
+              with:
+                  context: .
+                  file: ./Dockerfile
+                  push: true
+                  tags: |
+                      ${{ secrets.DOCKER_USERNAME }}/suolabot:${{ github.ref_name }}
+                      ${{ secrets.DOCKER_USERNAME }}/suolabot:latest
