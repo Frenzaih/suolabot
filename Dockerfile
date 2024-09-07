@@ -20,6 +20,7 @@ RUN mkdir -p /app/logs
 USER nobody
 
 # Define environment variables
+ENV NODE_ENV=production
 ENV BOT_TOKEN=
 ENV DUCK_CHANNEL=
 ENV DUCK_IMAGE_PATH=

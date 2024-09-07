@@ -56,5 +56,13 @@ client.once('ready', async () => {
   await onBotStart(client, duck_channel); // duckoftheday starting procedure
 });
 
-// Log in to Discord
-client.login(process.env.BOT_TOKEN); // Token in .env
+// Log in to discord if the code is not run inside CI/CD pipeline test environment
+if (process.env.NODE_ENV !== 'test') {
+    client.login(process.env.BOT_TOKEN)
+        .then(() => {
+            console.log('Bot logged in successfully!');
+        })
+        .catch(err => {
+            console.error('Failed to log in:', err);
+        });
+}
