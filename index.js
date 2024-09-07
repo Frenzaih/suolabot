@@ -56,8 +56,7 @@ client.once('ready', async () => {
     }
   });
 
-  // You can still call onBotStart if needed
-  await onBotStart(client); // Adjust this if you need to pass the channel as well
+  await onBotStart(client);
 });
 
 
