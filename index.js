@@ -55,8 +55,9 @@ client.once('ready', async () => {
       await postDuckImage(client, message.channel, false); // Pass false to not mark the image as used
     }
   });
-
-  await onBotStart(client);
+  // Set the duck channel as a constant
+  const duck_channel = client.channels.cache.get(process.env.DUCK_CHANNEL);
+  await onBotStart(client, duck_channel);
 });
 
 
