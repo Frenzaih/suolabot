@@ -44,17 +44,22 @@ client.on('messageCreate', async (message) => {
 // Initialize tasks
 client.once('ready', async () => {
   console.log(`Logged in as ${client.user.tag}!`);
-  const duck_channel = client.channels.cache.get(process.env.DUCK_CHANNEL); // Duck image channel (in .env)
 
   // Command to force post the duck image
   client.on('messageCreate', async (message) => {
+    // Check if the message is from a bot to avoid infinite loops
+    if (message.author.bot) return;
+
     if (message.content === '!forcepost' && message.member.permissions.has('ADMINISTRATOR')) {
-      await postDuckImage(client, duck_channel, false); // Pass false to not mark the image as used
+      // Use the channel where the command was sent
+      await postDuckImage(client, message.channel, false); // Pass false to not mark the image as used
     }
   });
 
-  await onBotStart(client, duck_channel); // duckoftheday starting procedure
+  // You can still call onBotStart if needed
+  await onBotStart(client); // Adjust this if you need to pass the channel as well
 });
+
 
 // Log in to discord if the code is not run inside CI/CD pipeline test environment
 if (process.env.NODE_ENV !== 'test') {
