@@ -14,6 +14,13 @@ const client = new Client({
   ]
 });
 
+// Ensure /data directory exists
+const dataDir = path.join(__dirname, 'data');
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+  console.log(`Created /data directory at: ${dataDir}`);
+}
+
 // Load commands from the "lib/commands" folder
 const commandFiles = fs.readdirSync(path.join(__dirname, 'lib', 'commands'))
   .filter(file => file.endsWith('.js'));
