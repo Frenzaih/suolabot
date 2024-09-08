@@ -74,18 +74,6 @@ client.on('interactionCreate', async (interaction) => {
 
   try {
     await command.execute(interaction, client); // Pass the client to the execute function
-
-    // Handle specific command logic
-    if (interaction.commandName === 'forcepost') {
-      // Check if the user has the required permission
-      if (interaction.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-        console.log("Forcefully posting duck image");
-        await postDuckImage(client, interaction.channel, false); // Pass false to not mark the image as used
-        await interaction.reply('Duck image posted!');
-      } else {
-        await interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
-      }
-    }
   } catch (error) {
     console.error('Error executing command:', error);
     await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
