@@ -20,6 +20,8 @@ RUN mkdir -p /app/logs
 ENV NODE_ENV=production
 ENV BOT_TOKEN=
 ENV DUCK_CHANNEL=
+# client id = application id in discord dev portal
+ENV CLIENT_ID=  
 
 # Define the logs directory as a volume
 VOLUME /app/logs
