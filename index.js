@@ -2,7 +2,6 @@ require('dotenv').config();
 
 const { Client, GatewayIntentBits } = require('discord.js');
 const { postDuckImage, scheduleDailyDuckImagePosting, onBotStart } = require('./lib/programs/duckoftheday');
-const pointsModule = require('./lib/programs/duckoftheday-points'); // Import the points module
 const fs = require('fs');
 const path = require('path');
 
