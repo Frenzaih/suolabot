@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits, Permissions } = require('discord.js');
-const { postDuckImage, onBotStart } = require('./lib/programs/duckoftheday');
+const { onBotStart } = require('./lib/programs/duckoftheday');
 const commandLoader = require('./lib/programs/commandLoader');
 const fs = require('fs');
 const path = require('path');
