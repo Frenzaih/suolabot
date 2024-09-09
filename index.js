@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits, Permissions } = require('discord.js');
+const { Client, GatewayIntentBits } = require('discord.js');
 const { onBotStart } = require('./lib/programs/duckoftheday');
 const commandLoader = require('./lib/programs/commandLoader');
 const fs = require('fs');
@@ -46,7 +46,7 @@ const client = new Client({
 });
 
 // Initialize the commands Map
-client.commands = new Map(); 
+client.commands = new Map();
 
 (async () => {
   try {
@@ -74,15 +74,6 @@ client.on('interactionCreate', async (interaction) => {
   if (!command) return;
 
   try {
-    // Check if the command is admin-only and if the user is the admin
-    if (command.adminOnly) {
-      const adminId = process.env.ADMIN;
-      if (interaction.user.id !== adminId) {
-        await interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
-        return; // Stop execution if the user is not an admin
-      }
-    }
-
     // Execute the command
     await command.execute(interaction, client); // Pass the client to the execute function
   } catch (error) {
