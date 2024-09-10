@@ -73,18 +73,6 @@ client.on('interactionCreate', async (interaction) => {
   const command = client.commands.get(interaction.commandName);
   if (!command) return;
 
-  // Check if the command requires admin privileges
-  const requiredPermissions = command.data.default_member_permissions;
-
-  // If the command has specific permissions, check them (this might be useless, but doesnt hurt to leave it)
-  if (requiredPermissions && !interaction.member.permissions.has(requiredPermissions)) {
-    await interaction.reply({
-      content: 'You do not have the required permissions to use this command.',
-      ephemeral: true,
-    });
-    return;
-  }
-
   try {
     // Execute the command
     await command.execute(interaction, client); // Pass the client to the execute function
