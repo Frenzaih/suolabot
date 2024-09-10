@@ -1,6 +1,6 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits, Permissions } = require('discord.js');
-const { postDuckImage, onBotStart } = require('./lib/programs/duckoftheday');
+const { Client, GatewayIntentBits } = require('discord.js');
+const { onBotStart } = require('./lib/programs/duckoftheday');
 const commandLoader = require('./lib/programs/commandLoader');
 const fs = require('fs');
 const path = require('path');
@@ -46,7 +46,8 @@ const client = new Client({
 });
 
 // Initialize the commands Map
-client.commands = new Map(); 
+client.commands = new Map();
+
 (async () => {
   try {
     const commands = commandLoader(client); // Load commands
@@ -72,25 +73,30 @@ client.on('interactionCreate', async (interaction) => {
   const command = client.commands.get(interaction.commandName);
   if (!command) return;
 
-  try {
-    await command.execute(interaction, client); // Pass the client to the execute function
+  // Check if the command requires admin privileges
+  const requiredPermissions = command.data.default_member_permissions;
 
-    // Handle specific command logic
-    if (interaction.commandName === 'forcepost') {
-      // Check if the user has the required permission
-      if (interaction.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-        console.log("Forcefully posting duck image");
-        await postDuckImage(client, interaction.channel, false); // Pass false to not mark the image as used
-        await interaction.reply('Duck image posted!');
-      } else {
-        await interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
-      }
-    }
+  // If the command has specific permissions, check them
+  if (requiredPermissions && !interaction.member.permissions.has(requiredPermissions)) {
+    await interaction.reply({
+      content: 'You do not have the required permissions to use this command.',
+      ephemeral: true,
+    });
+    return;
+  }
+
+  try {
+    // Execute the command
+    await command.execute(interaction, client); // Pass the client to the execute function
   } catch (error) {
     console.error('Error executing command:', error);
-    await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    await interaction.reply({
+      content: 'There was an error while executing this command!',
+      ephemeral: true,
+    });
   }
 });
+
 
 // Initialize tasks
 client.once('ready', async () => {
