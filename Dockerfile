@@ -22,6 +22,7 @@ ENV BOT_TOKEN=
 ENV DUCK_CHANNEL=
 # client id = application id in discord dev portal
 ENV CLIENT_ID=  
+ENV GUILD_ID=
 
 # Define the logs directory as a volume
 VOLUME /app/logs
