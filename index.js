@@ -56,9 +56,9 @@ client.commands = new Map();
     console.log('Started refreshing application (/) commands.');
 
     await rest.put(
-      Routes.applicationCommands(process.env.CLIENT_ID), // Global registration; use applicationGuildCommands for guild-specific
+      Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), // Replace 'YOUR_GUILD_ID' with the actual guild ID
       { body: commands }
-    );
+    );    
 
     console.log('Successfully reloaded application (/) commands.');
   } catch (error) {
@@ -73,18 +73,6 @@ client.on('interactionCreate', async (interaction) => {
   const command = client.commands.get(interaction.commandName);
   if (!command) return;
 
-  // Check if the command requires admin privileges
-  const requiredPermissions = command.data.default_member_permissions;
-
-  // If the command has specific permissions, check them
-  if (requiredPermissions && !interaction.member.permissions.has(requiredPermissions)) {
-    await interaction.reply({
-      content: 'You do not have the required permissions to use this command.',
-      ephemeral: true,
-    });
-    return;
-  }
-
   try {
     // Execute the command
     await command.execute(interaction, client); // Pass the client to the execute function
@@ -96,7 +84,6 @@ client.on('interactionCreate', async (interaction) => {
     });
   }
 });
-
 
 // Initialize tasks
 client.once('ready', async () => {
