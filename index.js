@@ -73,14 +73,30 @@ client.on('interactionCreate', async (interaction) => {
   const command = client.commands.get(interaction.commandName);
   if (!command) return;
 
+  // Check if the command requires admin privileges
+  const requiredPermissions = command.data.default_member_permissions;
+
+  // If the command has specific permissions, check them
+  if (requiredPermissions && !interaction.member.permissions.has(requiredPermissions)) {
+    await interaction.reply({
+      content: 'You do not have the required permissions to use this command.',
+      ephemeral: true,
+    });
+    return;
+  }
+
   try {
     // Execute the command
     await command.execute(interaction, client); // Pass the client to the execute function
   } catch (error) {
     console.error('Error executing command:', error);
-    await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    await interaction.reply({
+      content: 'There was an error while executing this command!',
+      ephemeral: true,
+    });
   }
 });
+
 
 // Initialize tasks
 client.once('ready', async () => {
