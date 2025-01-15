@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits } = require('discord.js');
 const { onBotStart } = require('./lib/programs/duckoftheday');
+const { updateStatus } = require('./lib/programs/updateStatus');
 const commandLoader = require('./lib/programs/commandLoader');
 const fs = require('fs');
 const path = require('path');
@@ -100,6 +101,13 @@ client.once('ready', async () => {
 
   // Call the onBotStart function
   await onBotStart(client, duck_channel);
+
+  // Set interval to update status every minute
+  setInterval(() => updateStatus(client), 60000); // Update status every 60 seconds
+
+  // Initial status update
+  await updateStatus(client);
+
 });
 
 // Log in to Discord if the code is not run inside CI/CD pipeline test environment
